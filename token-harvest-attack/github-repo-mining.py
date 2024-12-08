@@ -2,7 +2,6 @@
 
 from github import Github
 import base64
-import json
 
 class RepoMiner:
     def __init__(self, target_repo_name):
@@ -11,20 +10,17 @@ class RepoMiner:
 
     def mine_repositories(self):
         """Mine public repositories for sensitive data"""
-        g = Github()  # No auth needed for public repos
-        
-        # Search for repositories matching target name
+        g = Github()
         repos = g.search_repositories(self.target_repo_name)
-        
+
         for repo in repos:
             try:
-                # Look for specific files
                 files_to_check = [
                     'UserPubkey.pub',
                     'config.js',
                     'environment.ts'
                 ]
-                
+
                 for file_name in files_to_check:
                     try:
                         content = repo.get_contents(file_name)
@@ -34,7 +30,7 @@ class RepoMiner:
                             'file': file_name,
                             'content': decoded_content.decode('utf-8')
                         })
-                    except:
+                    except Exception:
                         continue
             except Exception as e:
                 print(f"Error mining repo {repo.full_name}: {str(e)}")
