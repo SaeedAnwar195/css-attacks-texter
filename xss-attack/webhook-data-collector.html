@@ -1,0 +1,20 @@
+<!-- xss-attacks/data-collector.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Collector</title>
+</head>
+<body>
+    <h1>Collected Data</h1>
+    <pre id="data"></pre>
+    <script>
+        // when runing update this with new webhook url
+        const ws = new WebSocket('https://webhook.site/4f7cfc0a-492d-4ec4-8793-b75c0a960da0'); 
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            document.getElementById('data').textContent += 
+                JSON.stringify(data, null, 2) + '\n\n';
+        };
+    </script>
+</body>
+</html>
